@@ -1,6 +1,8 @@
 # Autonomous Learner
 
-**The first fully autonomous learning system for AI agents** - continuously monitors GitHub repositories, detects cross-domain patterns, and generates actionable tasks.
+**[Early Development]** An open-source autonomous learning system for AI agents - monitors GitHub repositories, detects patterns, and generates actionable tasks.
+
+⚠️ **Status**: Early development. Core features implemented and tested locally, but not yet deployed in production. Use with caution.
 
 ## 🚀 What It Does
 
@@ -106,17 +108,17 @@ docker-compose up -d
 - **Cloudflare Tunnel**: Free secure access
 - **Auto-restart** and health monitoring included
 
-## 📈 Performance
+## 📈 Performance (Initial Testing)
 
-- **Learning cycles**: 3-5 seconds average
-- **Memory usage**: <100MB typical
-- **API efficiency**: Respects rate limits, graceful fallbacks
-- **Uptime**: Designed for 24/7 autonomous operation
+- **Learning cycles**: 3-5 seconds in local tests
+- **Memory usage**: <100MB in development
+- **API efficiency**: Implements rate limit handling
+- **Design goal**: 24/7 autonomous operation
 
 ## 🔬 Research Applications
 
-This system represents the first working implementation of:
-- **Fully autonomous AI learning** with task generation
+This system implements:
+- **Autonomous AI learning** with task generation
 - **Cross-domain pattern detection** for emerging technologies
 - **Self-directed research** pipeline for AI agents
 
@@ -143,7 +145,7 @@ This system represents the first working implementation of:
 - **API Access**: Integration with existing research workflows
 - **White Label**: Custom deployments for enterprises
 
-Revenue potential: $5k-50k/month within 6-12 months
+Potential commercial application - actual revenue dependent on market validation and production deployment
 
 ## 🤝 Contributing
 
