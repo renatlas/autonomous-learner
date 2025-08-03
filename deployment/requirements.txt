@@ -1,0 +1,10 @@
+# Core dependencies for autonomous learner
+requests>=2.31.0
+flask>=2.3.0
+psutil>=5.9.0
+
+# Optional: for enhanced monitoring
+prometheus-client>=0.17.0
+
+# GitHub integration (gh CLI is installed separately)
+# All GitHub operations use gh CLI subprocess calls

@@ -1,0 +1,72 @@
+version: '3.8'
+
+services:
+  autonomous-learner:
+    build:
+      context: ..
+      dockerfile: deployment/Dockerfile
+    container_name: ren-autonomous-learner
+    restart: unless-stopped
+    environment:
+      - GITHUB_TOKEN=${GITHUB_TOKEN}
+      - CYCLE_INTERVAL_MINUTES=${CYCLE_INTERVAL_MINUTES:-120}
+      - REPO=${REPO:-renatlas/renatlas-identity}
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+    command: python3 tools/autonomous-learner.py --continuous --interval ${CYCLE_INTERVAL_MINUTES:-120}
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import requests; requests.get('http://localhost:5000/api/health')"]
+      interval: 5m
+      timeout: 30s
+      retries: 3
+      start_period: 1m
+    networks:
+      - ren-network
+
+  dashboard:
+    build:
+      context: ..
+      dockerfile: deployment/Dockerfile
+    container_name: ren-dashboard
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./data:/app/data:ro
+      - ./logs:/app/logs:ro
+    command: python3 deployment/dashboard.py
+    depends_on:
+      - autonomous-learner
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/api/health"]
+      interval: 1m
+      timeout: 10s
+      retries: 3
+    networks:
+      - ren-network
+
+  # Optional: Cloudflare Tunnel for secure public access
+  cloudflare-tunnel:
+    image: cloudflare/cloudflared:latest
+    container_name: ren-tunnel
+    restart: unless-stopped
+    command: tunnel --no-autoupdate run --token ${CF_TUNNEL_TOKEN}
+    environment:
+      - CF_TUNNEL_TOKEN=${CF_TUNNEL_TOKEN}
+    depends_on:
+      - dashboard
+    networks:
+      - ren-network
+    profiles:
+      - cloudflare
+
+networks:
+  ren-network:
+    driver: bridge
+
+volumes:
+  data:
+    driver: local
+  logs:
+    driver: local
